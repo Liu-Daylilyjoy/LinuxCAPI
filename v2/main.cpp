@@ -22,5 +22,7 @@ int main(){
         pthread_join(temp[i],nullptr);
     }
 
+    pthread_mutex_destroy(&mutexId);
+
     return 0;
 }
