@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+//this class difined because pthread_create only accept void *(void*) function
 template<typename T>
 struct arg{
     T a;
@@ -13,6 +14,7 @@ struct arg{
         std::cout << "arg delete\n";
     }
 };
+
 
 template<typename T>
 class Sum{
@@ -25,7 +27,7 @@ class Sum{
 
             std::cout << "thread id is" << pthread_self() << '\n';
             
-            printf("%d + %d = %d\n",a,b,a+b);
+            printf("%d + %d = %d\n",a,b,a+b);//several threads printf mixing cause confusion
             
             return nullptr;
         }

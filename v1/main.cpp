@@ -17,13 +17,13 @@ int main(){
     }
 
     for(int i = 0;i<10;++i){
-        sleep(2);
+        sleep(2);//I want to make every thread work in right order,in fact this is a way that decrease much efficience
 
         pthread_create(&temp[i],nullptr,worker.get,(void*)&argu[i]);
     }
 
     for(int i = 0;i<10;++i){
-        pthread_join(temp[i],nullptr);
+        pthread_join(temp[i],nullptr);//wait every thread over
     }
 
     return 0;

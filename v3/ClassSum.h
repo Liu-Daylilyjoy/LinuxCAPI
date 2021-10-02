@@ -4,7 +4,6 @@
 #include <iostream>
 #include <semaphore.h>
 #include <pthread.h>
-#include <unistd.h>
 
 struct argu{
     int a = 0;
@@ -14,13 +13,12 @@ struct argu{
 static int result = 0;
 sem_t semaphore;
 pthread_mutex_t mutexId;
-static int count = 0;
 
 template<typename T = int>
 class Sum{
     public:
         Sum(){
-            sem_init(&semaphore,0,5);
+            sem_init(&semaphore,0,6);//6 so thread id will no more than 6
             pthread_mutex_init(&mutexId,nullptr);
         }
 
@@ -28,26 +26,24 @@ class Sum{
 
             sem_wait(&semaphore);
 
-            ++count;
+            int count;
 
-            printf("%d threads are on work\n",count);
+            sem_getvalue(&semaphore,&count);
+
+            printf("%d threads are on work\n",6-count);
 
             std::cout << "thread " << pthread_self() << "do this job\n";
 
             T a = ((argu*)temp)->a;
             T b = ((argu*)temp)->b;
 
-            pthread_mutex_lock(&mutexId);
+            pthread_mutex_lock(&mutexId);//avoid several threads change result at the same time
 
             result += (a+b);
 
             pthread_mutex_unlock(&mutexId);
 
-            sleep(5);
-
             sem_post(&semaphore);
-
-            --count;
 
             return nullptr;
         }

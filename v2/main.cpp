@@ -26,3 +26,4 @@ int main(){
 
     return 0;
 }
+//everything works quite well,but it have no advantage than the none mutex program
