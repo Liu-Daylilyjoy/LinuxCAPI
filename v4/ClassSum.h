@@ -11,7 +11,6 @@ struct argu{
 };
 
 const int MAX_THREAD_NUMBER = 6;
-bool isCreate = false;//judge whether has one instance of Sum
 bool isPrintf = false;//judge whether has one thread is printf
 static int result = 0;
 sem_t semaphore;
@@ -22,21 +21,32 @@ pthread_cond_t condition;
 
 template<typename T = int>
 class Sum{
-    public:
+    private:
         Sum(){
-            if(!isCreate){//avoid lock each time when call Sum(),this called singleton mode(my code maybe not standard)
+            sem_init(&semaphore,0,MAX_THREAD_NUMBER);
+            pthread_mutex_init(&resultMutex,nullptr);
+            pthread_cond_init(&condition,nullptr);{}//this called singleton mode(my code maybe not standard)
+        }
+
+    public:
+        static Sum<T>* create(){
+            static Sum<T>* instance = nullptr;
+
+            if(!instance){//avoid lock each time when call Sum()
                 pthread_mutex_lock(&initMutex);
                 
-                if(!isCreate){
-                    sem_init(&semaphore,0,MAX_THREAD_NUMBER);
-                    pthread_mutex_init(&resultMutex,nullptr);
-                    pthread_cond_init(&condition,nullptr);
+                if(!instance){
+                    printf("class create\n");
+                    
+                    static Sum<T> temp;
 
-                    isCreate = true;
+                    instance = &temp;
                 }
 
                 pthread_mutex_unlock(&initMutex);
             }
+
+            return instance;
         }
 
         static void* get(void* temp){
