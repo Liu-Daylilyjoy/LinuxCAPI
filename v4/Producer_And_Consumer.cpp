@@ -34,13 +34,15 @@ class Producer{
         static void* product(void* target){
             Producer* pro = (Producer*)target;
 
-            while(1){
+            while(count<12){
                 if(pro->producerQueue.size()<10){
                     pro->addJob(f);
                 }
 
                 sleep(2);//don't add job too fast
             }
+
+            return nullptr;
         }
 
         void addJob(std::function<void*(void*)> job){
@@ -73,7 +75,7 @@ class Consumer:public Producer{
         void* start(void*){
             int i;
             
-            while(1){
+            while(count<12){
                 i = 0;
 
                 while(i<MAXTHREADS){
@@ -152,7 +154,9 @@ int main(int argc,char** argv){//I hear that int main() not work on some os,so I
 
     test.start(nullptr);
 
-    printf("job failed\n");
+    pthread_join(producer,nullptr);
+
+    printf("job finishesd\n");
 
     pthread_mutex_destroy(&mutex);
     pthread_mutex_destroy(&queueMutex);

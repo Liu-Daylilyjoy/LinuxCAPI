@@ -7,4 +7,4 @@ Log of my learning of linux programming.
 
 2021.9.30--v3,use a more valid instance,add semaphore
 
-2021.10.2--v4,use singleton mode,add pthread_cond
+2021.10.2--v4,use singleton mode,add pthread_cond,add a similiar thread_pool
