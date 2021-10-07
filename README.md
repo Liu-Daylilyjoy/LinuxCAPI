@@ -12,3 +12,5 @@ Log of my learning of linux programming.
 2021.10.4--v5,new a pthread_rw_t instance
 
 2021.10.7--v6,instance for spinlock
+
+2022.10.7--v7,instance for easy daemon
